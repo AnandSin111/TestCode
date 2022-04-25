@@ -1,0 +1,54 @@
+﻿@model SampleApp.ASPDotNETCore.Models.StudentModel
+
+@{ ViewData["Title"] = "CreateStudent"; }
+
+<script type="text/javascript">function submitDetails() {
+        var data = {
+            FirstName: $("#firstName").val(),
+            LastName: $("#lastName").val()
+        }
+        console.log(data);
+        $.ajax({
+            type: 'POST',
+            url: '/Home/AddDetails',
+            //dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),
+            success: function (result) {
+                alert('Successfully received Data ');               
+                console.log(result);
+            },
+            error: function (result) {             
+                alert('Failed to receive the Data');
+                console.log('Failed');
+                console.log(result);
+            }
+        })
+    }</script>
+
+<h4>Add Deatils</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="studenteForm" novalidate class="needs-validation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" maxlength="20" type="text" class="form-control" id="firstName" required />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" maxlength="20"  type="text" class="form-control" id="lastName" required/>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" onclick="submitDetails()">Add </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
